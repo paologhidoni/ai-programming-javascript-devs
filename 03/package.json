@@ -1,0 +1,17 @@
+{
+  "name": "01_01b",
+  "version": "1.0.0",
+  "description": "This is the repository for the LinkedIn Learning course `AI Programming for JavaScript Developers`. The full course is available from [LinkedIn Learning][lil-course-url].",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^17.3.1",
+    "openai": "^6.25.0"
+  }
+}
