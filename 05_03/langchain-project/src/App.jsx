@@ -35,12 +35,36 @@ const translatePrompt = PromptTemplate.fromTemplate(
 /* ---------------- FULL PIPELINE ---------------- */
 
 const translateAnswerChain = RunnableSequence.from([
+  // Step 1: Mapping runnable.
+  // This step orchestrates execution of sub-runnables.
+
+  // - Runs generateAnswerChain (which itself contains PromptTemplate → Model → Parser).
+  // - That subchain calls the API and returns a string (originalAnswer).
+
+  // - Also extracts the language field from the input.
+
+  // - Combines results into a new object:
+  //   { originalAnswer: string, language: string }
+
+  // That object becomes the input for translatePrompt.
   {
     originalAnswer: generateAnswerChain,
     language: (input) => input.language,
   },
+
+  // Step 2: PromptTemplate is a formatting transformation layer.
+  // It does NOT call the API.
+  // It converts the object into a prompt string such as:
+  // "Translate the following text to Italian: Gravity is a force..."
   translatePrompt,
+
+  // Step 3: Model execution.
+  // This step sends the formatted prompt string to the LLM API
+  // and returns an AIMessage response object.
   model,
+
+  // Step 4: Output parser.
+  // Extracts the `.content` field from the model response and returns a clean string.
   parser,
 ]);
 
